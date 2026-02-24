@@ -97,12 +97,10 @@ nav a {
 }
 
 
-/* Overlay da câmera */
 #camera-overlay {
-    display: none; /* começa escondido */
+    display: none;
     position: fixed;
-    top: 0;
-    left: 0;
+    inset: 0;
     width: 100vw;
     height: 100vh;
     background: black;
@@ -110,10 +108,33 @@ nav a {
 }
 
 #camera {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
+    overflow: hidden;
 }
 
+/* ESSA PARTE É A MAIS IMPORTANTE */
+#camera video,
+#camera canvas {
+    position: absolute;
+    inset: 0;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover; /* Faz preencher a tela toda */
+}
+#camera-overlay::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 250px;
+    height: 150px;
+    transform: translate(-50%, -50%);
+    border: 3px solid #00ff00;
+    border-radius: 12px;
+}
 #fecharCamera {
     position: absolute;
     bottom: 30px;
