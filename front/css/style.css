@@ -44,3 +44,36 @@ nav a {
     color: #ff4d4d; 
     float: right; 
     text-decoration: none; }
+
+/* Configurações para Celulares (telas de até 768px) */
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+        padding: 10px;
+        margin: 10px auto;
+    }
+
+    /* Faz a tabela permitir scroll horizontal se for muito larga */
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+        width: 100%;
+    }
+
+    /* Aumenta os inputs e botões para facilitar o toque com o dedo */
+    input, button {
+        width: 100% !important;
+        height: 45px;
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+
+    /* Ajusta o cabeçalho do Dashboard */
+    nav {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+        padding: 15px;
+    }
+}
