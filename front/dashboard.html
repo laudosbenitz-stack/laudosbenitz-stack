@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
+    <title>Painel de Estoque</title>
+</head>
+<body>
+    <nav>Olá, <span id="userName"></span> (<span id="userNivel"></span>) | <a href="#" onclick="logout()">Sair</a></nav>
+    
+    <div class="container">
+        <h3>Produtos</h3>
+        <button onclick="abrirScanner()">📷 Ler Código de Barras</button>
+        <div id="camera" style="width: 100%; max-width: 400px;"></div>
+        
+        <table border="1">
+            <thead><tr><th>Nome</th><th>Qtd</th><th>Ação</th></tr></thead>
+            <tbody id="lista"></tbody>
+        </table>
+    </div>
+    <script src="js/estoque.js"></script>
+</body>
+</html>
