@@ -2,7 +2,7 @@ async function fazerLogin() {
     const login = document.getElementById('user').value;
     const senha = document.getElementById('pass').value;
 
-    const res = await fetch('https://estoque-laudos.onrender.com', {
+    const res = await fetch('https://estoque-laudos.onrender.com/auth/login', { 
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({login, senha})
