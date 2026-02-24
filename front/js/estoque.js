@@ -5,7 +5,7 @@ document.getElementById('userName').innerText = user.login;
 document.getElementById('userNivel').innerText = user.nivel;
 
 async function carregarProdutos() {
-    const res = await fetch('http://localhost:3000/estoque/produtos');
+    const res = await fetch('https://estoque-laudos.onrender.com/estoque/produtos');
     const produtos = await res.json();
     const html = produtos.map(p => `
         <tr>
@@ -24,7 +24,7 @@ async function movimentar(id, tipo) {
     const qtd = prompt(`Quantidade para ${tipo}:`);
     if (!qtd) return;
 
-    const res = await fetch('http://localhost:3000/estoque/movimentar', {
+    const res = await fetch('https://estoque-laudos.onrender.com/estoque/movimentar', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({produto_id: id, tipo, quantidade: qtd, usuario_id: user.id})
@@ -54,7 +54,7 @@ function abrirScanner() {
         Quagga.stop(); 
 
         // Busca o produto (Rota que vamos criar no backend)
-        const response = await fetch(`http://localhost:3000/estoque/produto/${codigo}`);
+        const response = await fetch(`https://estoque-laudos.onrender.com/estoque/produto/${codigo}`);
         const produto = await response.json();
 
         if (!produto || produto.error) {
@@ -82,7 +82,7 @@ async function registrarMovimentacao(produtoId, qtd) {
     // Pega o ID do Matheus, Edilson, etc., que salvamos no login
     const usuarioLogado = JSON.parse(localStorage.getItem('usuario')); 
 
-    const res = await fetch('http://localhost:3000/estoque/movimentar', {
+    const res = await fetch('https://estoque-laudos.onrender.com/estoque/movimentar', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
