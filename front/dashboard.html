@@ -10,13 +10,17 @@
     
     <div class="container">
         <h3>Produtos</h3>
-        <button onclick="abrirScanner()">📷 Ler Código de Barras</button>
-        <div id="camera" style="width: 100%; max-width: 400px;"></div>
-        
-        <table border="1">
+        <button onclick="abrirScanner()">📷 Registrar saída</button>
+        <div id="camera-overlay">
+        <div id="camera"></div>
+        <button id="fecharCamera" onclick="fecharScanner()">Fechar</button>
+    </div>
+        <div class="table-wrapper"></div>
+            <table border="1">
             <thead><tr><th>Nome</th><th>Qtd</th><th>Ação</th></tr></thead>
             <tbody id="lista"></tbody>
         </table>
+        </div>
     </div>
     <script src="/js/estoque.js"></script>
 </body>

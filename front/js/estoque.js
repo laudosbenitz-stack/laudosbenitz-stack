@@ -36,18 +36,31 @@ async function movimentar(id, tipo) {
 
     // 1. Função que liga a câmera
 function abrirScanner() {
+    document.getElementById("camera-overlay").style.display = "block";
+
     Quagga.init({
-        inputStream: { 
-            name: "Live", 
-            type: "LiveStream", 
+        inputStream: {
+            type: "LiveStream",
             target: document.querySelector('#camera'),
-            constraints: { facingMode: "environment" } 
+            constraints: {
+                facingMode: "environment"
+            }
         },
-        decoder: { readers: ["ean_reader", "code_128_reader"] }
-    }, (err) => {
-        if (err) return;
+        decoder: {
+            readers: ["code_128_reader"]
+        }
+    }, function(err) {
+        if (err) {
+            console.log(err);
+            return;
+        }
         Quagga.start();
     });
+}
+function fecharScanner() {
+    Quagga.stop();
+    document.getElementById("camera-overlay").style.display = "none";
+}
 
     Quagga.onDetected(async (data) => {
         const codigo = data.codeResult.code;
@@ -75,7 +88,7 @@ function abrirScanner() {
         // CHAMA A TERCEIRA FUNÇÃO AQUI
         registrarMovimentacao(produto.id, quantidadeSaida);
     });
-}
+
 
 // 2. A TERCEIRA FUNÇÃO (Onde você deve colar agora)
 async function registrarMovimentacao(produtoId, qtd) {
