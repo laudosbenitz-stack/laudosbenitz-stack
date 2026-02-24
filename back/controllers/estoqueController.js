@@ -10,8 +10,8 @@ exports.listarProdutos = async (req, res) => {
 };
 
 exports.movimentar = async (req, res) => {
-    const { produto_id, tipo, quantidade, usuario_id } = req.body;
-    const conn = await db.getConnection();
+    const { produto_id, tipo, quantidade } = req.body;
+    const usuario_id = req.session.usuario.id; // pega da sessão
     try {
         await conn.beginTransaction();
         const [prod] = await conn.query('SELECT quantidade FROM produtos WHERE id = ?', [produto_id]);

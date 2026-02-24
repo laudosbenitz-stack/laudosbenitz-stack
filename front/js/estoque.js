@@ -57,6 +57,54 @@ function abrirScanner() {
         Quagga.start();
     });
 }
+Quagga.onDetected(async function(result) {
+
+    const codigoLido = result.codeResult.code;
+
+    Quagga.stop();
+    document.getElementById("camera-overlay").style.display = "none";
+
+    try {
+
+        // 1️⃣ Buscar produto pelo código
+        const respostaProduto = await fetch(`/api/produtos/codigo/${codigoLido}`);
+
+        if (!respostaProduto.ok) {
+            alert("Produto não encontrado!");
+            return;
+        }
+
+        const produto = await respostaProduto.json();
+
+        // 2️⃣ Registrar movimentação (SEM enviar usuario_id)
+        const respostaMov = await fetch("/api/movimentar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            credentials: "include", // IMPORTANTE no Render
+            body: JSON.stringify({
+                produto_id: produto.id,
+                tipo: "SAIDA",
+                quantidade: 1
+            })
+        });
+
+        const resultado = await respostaMov.json();
+
+        if (!respostaMov.ok) {
+            alert(resultado.msg || "Erro ao registrar");
+            return;
+        }
+
+        alert("Produto registrado com sucesso!");
+
+    } catch (erro) {
+        console.error(erro);
+        alert("Erro no sistema.");
+    }
+
+});
 function fecharScanner() {
     Quagga.stop();
     document.getElementById("camera-overlay").style.display = "none";
