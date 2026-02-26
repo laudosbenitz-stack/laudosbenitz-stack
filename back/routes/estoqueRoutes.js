@@ -6,6 +6,7 @@ const estqCtrl = require('../controllers/estoqueController');
 router.get('/produtos', estqCtrl.listarProdutos);
 router.post('/movimentar', estqCtrl.movimentar);
 router.get('/produto/:codigo', estqCtrl.buscarPorCodigo);
+router.get('/saidas', estqCtrl.listarSaidas);
 module.exports = router;
 
 exports.registrarMovimentacao = async (req, res) => {
@@ -37,4 +38,5 @@ exports.registrarMovimentacao = async (req, res) => {
     } finally {
         connection.release();
     }
+    
 };

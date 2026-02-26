@@ -2,7 +2,8 @@ const user = JSON.parse(localStorage.getItem('usuario'));
 if (!user) window.location.href = 'login.html';
 
 document.getElementById('userName').innerText = user.login;
-document.getElementById('userNivel').innerText = user.nivel;
+const nivelEl = document.getElementById('userNivel');
+if (nivelEl) nivelEl.innerText = user.nivel;
 
 async function carregarProdutos() {
     const res = await fetch('https://estoque-laudos.onrender.com/estoque/produtos');
@@ -57,53 +58,40 @@ function abrirScanner() {
         Quagga.start();
     });
 }
-Quagga.onDetected(async function(result) {
-
-    const codigoLido = result.codeResult.code;
+Quagga.onDetected(async (data) => {
+    const codigo = data.codeResult.code;
 
     Quagga.stop();
     document.getElementById("camera-overlay").style.display = "none";
 
     try {
+        // 1️⃣ Buscar produto pelo código de barras
+        const response = await fetch(`https://estoque-laudos.onrender.com/estoque/produto/${codigo}`);
 
-        // 1️⃣ Buscar produto pelo código
-        const respostaProduto = await fetch(`/api/produtos/codigo/${codigoLido}`);
-
-        if (!respostaProduto.ok) {
+        if (!response.ok) {
             alert("Produto não encontrado!");
             return;
         }
 
-        const produto = await respostaProduto.json();
+        const produto = await response.json();
 
-        // 2️⃣ Registrar movimentação (SEM enviar usuario_id)
-        const respostaMov = await fetch("/api/movimentar", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            credentials: "include", // IMPORTANTE no Render
-            body: JSON.stringify({
-                produto_id: produto.id,
-                tipo: "SAIDA",
-                quantidade: 1
-            })
-        });
+        let quantidadeSaida;
 
-        const resultado = await respostaMov.json();
-
-        if (!respostaMov.ok) {
-            alert(resultado.msg || "Erro ao registrar");
-            return;
+        if (produto.unidade.toUpperCase() === "UN") {
+            quantidadeSaida = 1;
+        } else {
+            const peso = prompt(`Produto: ${produto.nome}\nDigite o peso (KG):`);
+            if (!peso) return;
+            quantidadeSaida = parseFloat(peso);
         }
 
-        alert("Produto registrado com sucesso!");
+        // 2️⃣ Registrar saída
+        await registrarMovimentacao(produto.id, quantidadeSaida);
 
     } catch (erro) {
         console.error(erro);
-        alert("Erro no sistema.");
+        alert("Erro ao buscar produto.");
     }
-
 });
 function fecharScanner() {
     Quagga.stop();
@@ -140,16 +128,15 @@ function fecharScanner() {
 
 // 2. A TERCEIRA FUNÇÃO (Onde você deve colar agora)
 async function registrarMovimentacao(produtoId, qtd) {
-    // Pega o ID do Matheus, Edilson, etc., que salvamos no login
-    const usuarioLogado = JSON.parse(localStorage.getItem('usuario')); 
+    const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
 
     const res = await fetch('https://estoque-laudos.onrender.com/estoque/movimentar', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             produto_id: produtoId,
-            tipo: 'SAIDA',
             quantidade: qtd,
+            tipo: 'SAIDA',
             usuario_id: usuarioLogado.id // Envia para o estoqueController
         })
     });
@@ -161,15 +148,6 @@ async function registrarMovimentacao(produtoId, qtd) {
         alert("Erro ao registrar saída.");
     }
 }
-// Exemplo de como pegar o ID do usuário que salvamos no login (LocalStorage)
-const usuarioLogado = JSON.parse(localStorage.getItem('usuario'));
-
-const dadosSaida = {
-    produto_id: idDoProduto,
-    quantidade: qtdSaida,
-    tipo: 'SAIDA',
-    usuario_id: usuarioLogado.id // Aqui o ID do Matheus, Edilson, etc.
-};
 
 function logout() { localStorage.clear(); window.location.href = 'login.html'; }
 carregarProdutos();

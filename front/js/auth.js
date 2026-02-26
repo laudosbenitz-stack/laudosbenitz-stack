@@ -11,8 +11,14 @@ async function fazerLogin() {
     const data = await res.json();
     if (data.id) {
     localStorage.setItem('usuario', JSON.stringify(data));
+
+    if (data.nivel === "ADMIN") {
+    window.location.href = 'dashboard-adm.html';
+} else {
     window.location.href = 'dashboard.html';
+}
+
     } else {
     alert(data.error || 'Erro ao logar');
-}
+    }
 }

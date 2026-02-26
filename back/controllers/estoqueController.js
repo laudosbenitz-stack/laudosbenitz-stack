@@ -8,6 +8,23 @@ exports.listarProdutos = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
+exports.listarSaidas = async (req, res) => {
+    try {
+        const [rows] = await db.query(`
+            SELECT m.id, m.quantidade, m.data, u.login, p.nome
+            FROM movimentacoes m
+            JOIN usuarios u ON m.usuario_id = u.id
+            JOIN produtos p ON m.produto_id = p.id
+            WHERE m.tipo = 'SAIDA'
+            ORDER BY m.data DESC
+            LIMIT 20
+        `);
+
+        res.json(rows);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
 
 exports.movimentar = async (req, res) => {
     const { produto_id, tipo, quantidade } = req.body;

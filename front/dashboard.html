@@ -1,27 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
     <title>Painel de Estoque</title>
+    <script>
+    const usuario = JSON.parse(localStorage.getItem('usuario'));
+
+if (!usuario || usuario.nivel !== "FUNCIONARIO") {
+    window.location.href = "login.html";
+}
+</script>
 </head>
 <body>
-    <nav>Olá, <span id="userName"></span> (<span id="userNivel"></span>) | <a href="#" onclick="logout()">Sair</a></nav>
+    <nav><span id= "userName" style="font-size: 18px;"></span> | <a href="login.html" onclick="logout()" style="color: rgb(255, 255, 255); font-size: 18px;">Sair</a></nav>
     
     <div class="container">
-        <h3>Produtos</h3>
-        <button onclick="abrirScanner()">📷 Registrar saída</button>
+        <button onclick="abrirScanner()"> Registrar saída</button>
         <div id="camera-overlay">
         <div id="camera"></div>
         <button id="fecharCamera" onclick="fecharScanner()">Fechar</button>
     </div>
-        <div class="table-wrapper"></div>
-            <table border="1">
-            <thead><tr><th>Nome</th><th>Qtd</th><th>Ação</th></tr></thead>
-            <tbody id="lista"></tbody>
-        </table>
-        </div>
-    </div>
-    <script src="/js/estoque.js"></script>
+    <script src="js/estoque.js"></script>
+    <script>
+    document.getElementById("userName").textContent = usuario.login;
+    </script>
 </body>
 </html>

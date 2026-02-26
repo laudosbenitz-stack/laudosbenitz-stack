@@ -1,8 +1,9 @@
 
 body {
     margin: 0;
+    overflow: hidden;
     font-family: Arial, Helvetica, sans-serif;
-    background: #f4f6f9;
+    display: block;
 }
 
 /* ================= LOGIN ================= */
@@ -71,8 +72,13 @@ nav a {
     margin: 20px auto;
     background: white;
     padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    display: flex;
+    border-radius: 20px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    margin-top: 200px;
 }
 
 .container h3 {
@@ -84,16 +90,17 @@ nav a {
     max-width: 300px;
     height: 45px;
     margin-bottom: 15px;
-    border-radius: 8px;
+    border-radius: 21px;
     border: none;
-    background: #000000;
-    color: white;
-    font-size: 16px;
+    background: #ffffff;
+    color: rgb(0, 0, 0);
+    font-size: 25px;
     cursor: pointer;
+    font-family:Verdana, Geneva, Tahoma, sans-serif
 }
 
 .container button:hover {
-    background: #313332;
+    background: #ffffff;
 }
 
 
@@ -132,7 +139,7 @@ nav a {
     width: 250px;
     height: 150px;
     transform: translate(-50%, -50%);
-    border: 3px solid #00ff00;
+    border: 3px solid #000000;
     border-radius: 12px;
 }
 #fecharCamera {
@@ -144,14 +151,11 @@ nav a {
     height: 45px;
     border: none;
     border-radius: 8px;
-    background: red;
+    background: rgb(82, 78, 78);
     color: white;
     font-size: 16px;
 }
 /* Tabela responsiva */
-.table-wrapper {
-    overflow-x: auto;
-}
 
 table {
     width: 100%;
@@ -167,6 +171,62 @@ th, td {
 th {
     background: #e2e8f0;
 }
+/* ================= DASHBOARD ADMINISTRADOR ================= */
+/* Layout principal */
+.layout {
+    display: flex;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+}
+
+
+/* Sidebar lateral */
+.sidebar {
+    width: 250px;
+    background-color: #1f2937;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+/* Título */
+.sidebar h2 {
+    margin-bottom: 30px;
+}
+
+/* Botões empilhados */
+.sidebar button {
+    margin-bottom: 5px;
+    padding: 12px;
+    border: none;
+    background-color: #374151;
+    color: white;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: 0.3s;
+}
+
+.sidebar button:hover {
+    background-color: #4b5563;
+}
+
+/* Área central */
+.conteudo {
+    flex: 1;
+    padding: 40px;
+    background-color: #f3f4f6;
+    overflow-y: auto;
+}
+
+/* Estilo das saídas */
+#listaSaidas p {
+    background-color: white;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
 
 /* ================= RESPONSIVIDADE EXTRA ================= */
 
@@ -177,13 +237,41 @@ th {
         padding: 12px;
     }
 
+    body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-size: x-large;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+
+    }
+
     .container {
-        padding: 15px;
+        padding: 6px;
+        height: 56px;
+        margin: auto;
+        width: 85%;
+        max-width: 900px;
+        margin-top: 250px;
+        text-align: center;
     }
 
     th, td {
         font-size: 14px;
         padding: 8px;
     }
+
+    @media (max-width: 600px) {
+
+    #fecharCamera {
+        width: 80%;
+        height: 50px;
+        font-size: 18px;
+    }
+
+}
+    
+
 
 }

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
+    <title>Painel de Estoque</title>
+    <script>
+    const usuario = JSON.parse(localStorage.getItem('usuario'));
+
+    if (!usuario || usuario.nivel !== "ADMIN") {
+    window.location.href = "login.html";
+    }
+    </script>
+</head>
+<body>
+    <nav>Olá <span id="userName"> </span></nav>
+    
+    <div class="layout">
+
+        <aside class="sidebar">
+            <h3>Produtos</h3>
+            <button class="Register" id="entradaProdutos" onclick="abrirEntrada()">Registrar entrada de produtos</button>
+            <button class="Register" id="cadastroFuncionario" onclick="abrirCadastroFuncionario()">Cadastrar funcionário</button>
+            <a href="login.html" onclick="logout()">Sair</a>
+        </aside>
+
+            <main>
+                <h2 >Saídas</h2>
+                <div id="listaSaidas"></div>
+            </main>
+    </div>
+    
+
+    <script src="js/estoque.js"></script>
+    <script>
+    async function carregarSaidas() {
+    const res = await fetch('/estoque/saidas');
+    const saidas = await res.json();
+
+    const div = document.getElementById("listaSaidas");
+    div.innerHTML = "";
+
+    saidas.forEach(saida => {
+        div.innerHTML += `
+            <p>
+                <strong>${saida.login}</strong> retirou 
+                ${saida.quantidade} de 
+                ${saida.nome} 
+                às ${new Date(saida.data).toLocaleString()}
+            </p>
+        `;
+    });
+}
+
+// Atualiza a cada 5 segundos
+    setInterval(carregarSaidas, 5000);
+
+// Carrega imediatamente ao abrir
+    carregarSaidas();
+</script>
+</body>
+</html>
